@@ -1,6 +1,6 @@
 import torch
 import pywt
-import numpy as np
+
 
 """
     Common wavelets for Time Series analysis
@@ -46,26 +46,36 @@ import numpy as np
 
 
 class WaveletTransform(torch.nn.Module):
-
     def __init__(self, wavelet_type="db4", mode="zero", padding=True):
-        """
-        :param wavelet_type: The type of wavelet to use. See pywt.wavelist() for a list of available wavelets.
-        :param mode: The mode to use for the wavelet transform. See pywt.MODES.modes for a list of available modes.
-        :param padding: Whether to pad the input with zeros to make the length a power of 2.
-        """
-
         super(WaveletTransform, self).__init__()
+
+        # Wavelet specific properties
         self.wavelet_type = wavelet_type
+        self.wavelet = pywt.Wavelet(wavelet_type)
+        self.filter_size = len(self.wavelet.dec_lo)
+
         self.mode = mode
         self.padding = padding
 
     def forward(self, x):
+        x = x.squeeze()
         if self.padding:
-            x = torch.cat([x, torch.zeros((x.shape[0], self.wavelet_order-1), dtype=x.dtype)], dim=1)
-        x = x.detach().numpy()
-        result = []
-        for i in range(x.shape[0]):
-            cA, cD = pywt.dwt(x[i], self.wavelet_type, self.mode)
-            result.append(np.concatenate([cA, cD]))
-        result = torch.from_numpy(np.array(result))
-        return result
+            padding = (0, x.shape[-1] % 2)
+            if self.mode == "zero":
+                x = torch.nn.functional.pad(x, padding, mode="constant", value=0)
+            else:
+                x = torch.nn.functional.pad(x, padding, mode=self.mode)
+
+        coeffs = pywt.wavedec(x.numpy(), self.wavelet_type)
+        coeffs_tensor = [torch.from_numpy(c) for c in coeffs]
+        return torch.cat(coeffs_tensor, dim=-1)
+
+    def get_output_dim(self, input_size) -> int:
+
+        # We have to execute the forward pass to get the output size
+        # This is because the output size depends on the input size
+        # and the padding mode
+
+        x = torch.randn(1, 1, input_size)
+        out = self.forward(x)
+        return out.shape[-1]

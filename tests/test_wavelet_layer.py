@@ -1,7 +1,12 @@
 import torch
-import numpy as np
-import pytest
-from WaveletTransform import WaveletTransform
+
+from wire.layers.wavelet import WaveletTransform
+
+"""
+
+WARNING : These tests are boilerplate, the expected = torch.tensor() values are not correct.
+
+"""
 
 def test_WaveletTransform_init():
     wt = WaveletTransform("db4", "zero", True)
