@@ -15,7 +15,6 @@ def train_model(model, criterion, optimizer, train_data, val_data, test_data, ba
     best_val_loss = float('inf')
     num_train_batches = train_data.shape[0] // batch_size
     num_val_batches = val_data.shape[0] // batch_size
-    num_test_batches = test_data.shape[0] // batch_size
 
     # Tracking
     train_losses = []
@@ -49,6 +48,7 @@ def train_model(model, criterion, optimizer, train_data, val_data, test_data, ba
         train_losses.append(sum(batch_losses) / len(batch_losses))
 
         # Evaluate the model on the validation data
+        # Tumbling time window for efficiency since this is no_grad
         with torch.no_grad():
             # Compute val_loss in mini-batches
             val_loss = 0
@@ -56,8 +56,12 @@ def train_model(model, criterion, optimizer, train_data, val_data, test_data, ba
                 start = batch * batch_size
                 end = (batch + 1) * batch_size
                 batch_data = val_data[start:end]
-                outputs = model(batch_data[:-steps_ahead])
-                val_loss += criterion(outputs, batch_data[-steps_ahead:])
+
+                bd_in = batch_data[:-steps_ahead]
+                bd_out = batch_data[-steps_ahead:]
+
+                outputs = model(bd_in)
+                val_loss += criterion(outputs, bd_out)
 
             # Tracking
             val_losses.append(val_loss.item())
@@ -67,18 +71,18 @@ def train_model(model, criterion, optimizer, train_data, val_data, test_data, ba
                 best_val_loss = loss.item()
                 save_checkpoint(model, epoch, f"{training_dir}/best_val_loss_model.pth")
 
-        if (epoch + 1) % 10 == 0:
+        if (epoch + 1) % 5 == 0:
             # Pad epoch with leading zeros
             save_checkpoint(model, epoch, f"{training_dir}/epoch_{str(epoch).zfill(3)}.pth")
 
-            print(f"Epoch [{epoch+1}/100], " \
+            print(f"Epoch [{epoch+1} / {num_epochs}], " \
                 f" Loss: {loss.item()} | " \
                 f" Val Loss: {val_loss.item()}" \
                 f" Best Val Loss: {best_val_loss}"
             )
 
 
-    # Evaluate the model on the test data
+    # Evaluate the model on the test data, sliding time window - we want accuracy!
     with torch.no_grad():
 
         best_model, _ = load_checkpoint(model, f"{training_dir}/best_val_loss_model.pth")
@@ -88,15 +92,18 @@ def train_model(model, criterion, optimizer, train_data, val_data, test_data, ba
         actual = []
         predictions = []
 
-        for batch in range(num_test_batches):
-            start = batch * batch_size
-            end = (batch + 1) * batch_size
-            batch_data = test_data[start:end]
-            outputs = best_model(batch_data[:-steps_ahead])
-            test_loss += criterion(outputs, batch_data[-steps_ahead:])
+        for batch_idx in range(len(test_data) - batch_size):
 
-            actual.append(batch_data[-steps_ahead:].numpy())
-            predictions.append(outputs.numpy())
+            batch_data = test_data[batch_idx:batch_idx+batch_size]
+
+            model_inputs = batch_data[:-steps_ahead]
+            actual_outputs = batch_data[-steps_ahead:]
+            predicted_outputs = best_model(model_inputs)
+
+            test_loss += criterion(predicted_outputs, actual_outputs)
+
+            actual.extend(list(actual_outputs.detach().numpy().flatten()))
+            predictions.extend(list(predicted_outputs.detach().numpy().flatten()))
 
         print(f"Test Loss: {test_loss.item()}")
 

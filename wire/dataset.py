@@ -4,15 +4,19 @@ from typing import Tuple
 
 RAW_DATA = "data/ES_continuous_adjusted_1min.txt"
 
+def _load_data() -> pd.DataFrame:
 
-def get_univariate_dataset(column, limit=None) -> pd.Series:
-
-    data = pd.read_csv(
+    return pd.read_csv(
         RAW_DATA,
         engine="pyarrow",
         header=None,
         names=["time", "open", "high", "low", "close", "volume"]
     )
+
+
+def get_univariate_dataset(column, limit=None) -> pd.Series:
+
+    data = _load_data()
 
     data = data[column]
 
@@ -20,6 +24,19 @@ def get_univariate_dataset(column, limit=None) -> pd.Series:
         data = data[:limit]
 
     return data
+
+
+def get_multivariate_dataset(columns, limit=None) -> pd.Series:
+
+    data = _load_data()
+
+    data = data[columns]
+
+    if limit is not None:
+        data = data[:limit]
+
+    return data
+
 
 def train_test_split(
         data, train_ratio=0.8,

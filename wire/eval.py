@@ -26,9 +26,9 @@ def writeout_graphs(
     if not os.path.exists(training_dir):
         os.makedirs(training_dir)
 
-    gs = gridspec.GridSpec(2, 2)
+    gs = gridspec.GridSpec(4, 2)
 
-    fig = plt.figure(figsize=(15, 15))
+    fig = plt.figure(figsize=(15, 30))
 
     ax1 = fig.add_subplot(gs[0, 0])
     ax1.plot(train_losses[warmup_discard:], label="Training Loss")
@@ -52,5 +52,21 @@ def writeout_graphs(
         ax3.set_xlabel("Time")
         ax3.set_ylabel("Value")
         ax3.legend()
+
+        ax4 = fig.add_subplot(gs[2, :])
+        ax4.plot(actual[-400:], label="Actual")
+        ax4.plot(predictions[-400:], label="Predicted")
+        ax4.set_title("Actual vs Predicted - Last 400 Predictions")
+        ax4.set_xlabel("Time")
+        ax4.set_ylabel("Value")
+        ax4.legend()
+
+        ax5 = fig.add_subplot(gs[3, :])
+        ax5.plot(actual[-200:], label="Actual")
+        ax5.plot(predictions[-200:], label="Predicted")
+        ax5.set_title("Actual vs Predicted - Last 200 Predictions")
+        ax5.set_xlabel("Time")
+        ax5.set_ylabel("Value")
+        ax5.legend()
 
     plt.savefig(f"{training_dir}/performance.png")
