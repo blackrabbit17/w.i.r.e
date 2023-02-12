@@ -9,7 +9,7 @@ import torch.optim as optim
 
 def train_with_grid_params(params):
 
-    data = get_univariate_dataset(column='close', limit=10000)
+    data = get_univariate_dataset(column='close', limit=100000)
     train_data, val_data, test_data = train_test_split(data)
 
     steps_ahead = 1
@@ -44,7 +44,7 @@ def grid_search():
         {
             'hidden_dim': [64, 128, 256, 512],
             'wavelet_type': ['db4', 'db8', 'haar'],
-            'base_dir': ['checkpoints/fc_univ_1layer', ]}
+            'base_dir': ['checkpoints/fc_univ', ]}
     ]
 
     for grid in ParameterGrid(param_grid):
