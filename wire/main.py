@@ -9,7 +9,7 @@ import torch.optim as optim
 
 def train_with_grid_params(params):
 
-    data = get_univariate_dataset(column='close', limit=2000)
+    data = get_univariate_dataset(column='close', limit=200_000)
     train_data, val_data, test_data = train_test_split(data)
 
     steps_ahead = params['forecast']
@@ -19,7 +19,7 @@ def train_with_grid_params(params):
     criterion = nn.MSELoss()
     optimizer = optim.Adam(model.parameters(), lr=0.001)
 
-    num_epochs = 11
+    num_epochs = 50
 
     run_id, test_loss = train_model(
         model,
@@ -43,8 +43,8 @@ def grid_search():
     param_grid = [
         {
             'forecast': [1, ],
-            'batch_size': [32, 64, 128],
-            'hidden_dim': [64, 128, 256, 512],
+            'batch_size': [64, 128],
+            'hidden_dim': [256, 512],
             'wavelet_type': ['db4', 'db8', 'haar'],
             'base_dir': ['checkpoints/fc_univ', ]}
     ]

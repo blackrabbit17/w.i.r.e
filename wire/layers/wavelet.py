@@ -66,7 +66,7 @@ class WaveletTransform(torch.nn.Module):
             else:
                 x = torch.nn.functional.pad(x, padding, mode=self.mode)
 
-        coeffs = pywt.wavedec(x.numpy(), self.wavelet_type)
+        coeffs = pywt.wavedec(x.numpy(), self.wavelet_type, level=2)
         coeffs_tensor = [torch.from_numpy(c) for c in coeffs]
         return torch.cat(coeffs_tensor, dim=-1)
 
