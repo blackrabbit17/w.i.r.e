@@ -27,9 +27,26 @@ def train_test_split(
     ) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
 
     num_data = data.shape[0]
-    train_data = data[:int(train_ratio * num_data)]
-    val_data = data[int(train_ratio * num_data):int((train_ratio + val_ratio) * num_data)]
-    test_data = data[int((train_ratio + val_ratio) * num_data):]
+
+    train_start_index = 0
+    train_end_index = int(train_ratio * num_data)
+
+    val_start_index = int(train_ratio * num_data)
+    val_end_index = int((train_ratio + val_ratio) * num_data)
+
+    test_start_index = int((train_ratio + val_ratio) * num_data)
+    test_end_index = num_data
+
+    print(
+        f'Dataset shape: {data.shape}\n',
+        f'Train:         {train_start_index}:{train_end_index}\n',
+        f'Val:           {val_start_index}:{val_end_index}\n',
+        f'Test:          {test_start_index}:{num_data}\n'
+    )
+
+    train_data = data[train_start_index:train_end_index]
+    val_data = data[val_start_index:val_end_index]
+    test_data = data[test_start_index:num_data]
 
     return (
         torch.tensor(train_data.values, dtype=torch.float32),
