@@ -3,12 +3,14 @@ import pandas as pd
 import torch
 from typing import List
 
-"""
-TODO: IMPLEMENTATION NOT COMPLETE
-"""
+
+SECONDS_PER_MINUTE = 60
+SECONDS_PER_HOUR = 60 * SECONDS_PER_MINUTE
+SECONDS_PER_DAY = 24 * SECONDS_PER_HOUR
+SECONDS_PER_WEEK = 7 * SECONDS_PER_DAY
 
 
-def cyclic_encoding(timestamp: str, period: int) -> np.ndarray:
+def cyclic_encoding(timestamp: str) -> np.ndarray:
     """
     Calculate the cyclic encoding of a datetime string.
 
@@ -22,16 +24,35 @@ def cyclic_encoding(timestamp: str, period: int) -> np.ndarray:
 
     timestamp = pd.to_datetime(timestamp)
 
-    seconds = np.int64(timestamp.timestamp()) % period
+    seconds_sin_encoding = np.sin(2 * np.pi * timestamp.second / 60)
+    seconds_cos_encoding = np.cos(2 * np.pi * timestamp.second / 60)
 
-    sin_encoding = np.sin(2 * np.pi * seconds / period)
-    cos_encoding = np.cos(2 * np.pi * seconds / period)
+    minutes_sin_encoding = np.sin(2 * np.pi * timestamp.minute / 60)
+    minutes_cos_encoding = np.cos(2 * np.pi * timestamp.minute / 60)
 
-    return np.stack([sin_encoding, cos_encoding], axis=1)
+    hours_sin_encoding = np.sin(2 * np.pi * timestamp.hour / 24)
+    hours_cos_encoding = np.cos(2 * np.pi * timestamp.hour / 24)
+
+    days_sin_encoding = np.sin(2 * np.pi * timestamp.day_of_week / 7)
+    days_cos_encoding = np.cos(2 * np.pi * timestamp.day_of_week / 7)
+
+    encoding = np.stack(
+        [seconds_sin_encoding,
+         seconds_cos_encoding,
+         minutes_sin_encoding,
+         minutes_cos_encoding,
+         hours_sin_encoding,
+         hours_cos_encoding,
+         days_sin_encoding,
+         days_cos_encoding],
+        axis=0,
+    )
+
+    return encoding
 
 
 class CyclicEncoding(torch.nn.Module):
-    def __init__(self, period: int):
+    def __init__(self):
         """
         Initialize the cyclic encoding layer.
 
@@ -39,7 +60,9 @@ class CyclicEncoding(torch.nn.Module):
         - period: The period to use for the encoding.
         """
         super(CyclicEncoding, self).__init__()
-        self.period = period
+
+    def get_output_dim(self) -> int:
+        return 16
 
     def forward(self, timestamps: List[str]) -> torch.Tensor:
         """
@@ -52,6 +75,6 @@ class CyclicEncoding(torch.nn.Module):
         - The cyclic encoding of the timestamps as a PyTorch tensor.
         """
 
-        encoded = np.stack([cyclic_encoding(ts, self.period) for ts in timestamps], axis=0)
+        encoded = np.stack([cyclic_encoding(ts) for ts in timestamps], axis=0)
 
         return torch.from_numpy(encoded).float()
