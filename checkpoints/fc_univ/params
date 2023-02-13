@@ -1,0 +1,12 @@
+01GS41RB|43366.2578125|{'base_dir': 'checkpoints/fc_univ', 'batch_size': 64, 'forecast': 1, 'hidden_dim': 512, 'wavelet_type': 'haar'}
+01GS436W|293060.6875|{'base_dir': 'checkpoints/fc_univ', 'batch_size': 128, 'forecast': 1, 'hidden_dim': 256, 'wavelet_type': 'db4'}
+01GS3YQW|635349.0|{'base_dir': 'checkpoints/fc_univ', 'batch_size': 64, 'forecast': 1, 'hidden_dim': 512, 'wavelet_type': 'db4'}
+01GS3X64|953969.125|{'base_dir': 'checkpoints/fc_univ', 'batch_size': 64, 'forecast': 1, 'hidden_dim': 256, 'wavelet_type': 'haar'}
+01GS44PY|1022410.375|{'base_dir': 'checkpoints/fc_univ', 'batch_size': 128, 'forecast': 1, 'hidden_dim': 256, 'wavelet_type': 'haar'}
+01GS43YQ|1089680.0|{'base_dir': 'checkpoints/fc_univ', 'batch_size': 128, 'forecast': 1, 'hidden_dim': 256, 'wavelet_type': 'db8'}
+01GS3VJQ|1365028.0|{'base_dir': 'checkpoints/fc_univ', 'batch_size': 64, 'forecast': 1, 'hidden_dim': 256, 'wavelet_type': 'db8'}
+01GS3SZT|1720557.5|{'base_dir': 'checkpoints/fc_univ', 'batch_size': 64, 'forecast': 1, 'hidden_dim': 256, 'wavelet_type': 'db4'}
+01GS46ZT|4273406.5|{'base_dir': 'checkpoints/fc_univ', 'batch_size': 128, 'forecast': 1, 'hidden_dim': 512, 'wavelet_type': 'haar'}
+01GS467B|4807428.5|{'base_dir': 'checkpoints/fc_univ', 'batch_size': 128, 'forecast': 1, 'hidden_dim': 512, 'wavelet_type': 'db8'}
+01GS45FG|4938148.5|{'base_dir': 'checkpoints/fc_univ', 'batch_size': 128, 'forecast': 1, 'hidden_dim': 512, 'wavelet_type': 'db4'}
+01GS405S|10945849.0|{'base_dir': 'checkpoints/fc_univ', 'batch_size': 64, 'forecast': 1, 'hidden_dim': 512, 'wavelet_type': 'db8'}

@@ -1,0 +1,1 @@
+01GS4J92|12733318.0|{'base_dir': 'checkpoints/fc_univ_lr0_01_1M', 'batch_size': 64, 'forecast': 1, 'hidden_dim': 256, 'wavelet_type': 'db4'}

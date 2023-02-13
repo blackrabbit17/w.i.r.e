@@ -1,0 +1,7 @@
+01GS4B9D|17439.7578125|{'base_dir': 'checkpoints/fc_multiv', 'batch_size': 64, 'forecast': 1, 'hidden_dim': 256, 'wavelet_type': 'db8'}
+01GS4CE2|24203.921875|{'base_dir': 'checkpoints/fc_multiv', 'batch_size': 64, 'forecast': 1, 'hidden_dim': 256, 'wavelet_type': 'haar'}
+01GS4A53|57963.140625|{'base_dir': 'checkpoints/fc_multiv', 'batch_size': 64, 'forecast': 1, 'hidden_dim': 256, 'wavelet_type': 'db4'}
+01GS4EFP|136561.796875|{'base_dir': 'checkpoints/fc_multiv', 'batch_size': 64, 'forecast': 1, 'hidden_dim': 512, 'wavelet_type': 'db8'}
+01GS4FE6|555486.3125|{'base_dir': 'checkpoints/fc_multiv', 'batch_size': 64, 'forecast': 1, 'hidden_dim': 512, 'wavelet_type': 'haar'}
+01GS4DHB|894883.1875|{'base_dir': 'checkpoints/fc_multiv', 'batch_size': 64, 'forecast': 1, 'hidden_dim': 512, 'wavelet_type': 'db4'}
+01GS48SF|18526022.0|{'base_dir': 'checkpoints/fc_multiv', 'batch_size': 64, 'forecast': 1, 'hidden_dim': 256, 'wavelet_type': 'db4'}

@@ -1,0 +1,2 @@
+01GS1Y6M|4117673.75|{'base_dir': 'checkpoints/fc_univ', 'batch_size': 32, 'forecast': 1, 'hidden_dim': 64, 'wavelet_type': 'db4'}
+01GS2EXV|12521045.0|{'base_dir': 'checkpoints/fc_univ', 'batch_size': 32, 'forecast': 1, 'hidden_dim': 64, 'wavelet_type': 'db8'}
