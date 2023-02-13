@@ -1,3 +1,20 @@
+
+Summary
+===
+```
+The best performing models were the ones with:
+  Unsurprising:
+  - Larger hidden units (512)
+  - Smaller batch size (64)
+  - Higher learning rate (0.01) vs (0.001)
+  - Larger dataset (20% of total)
+
+  Surprising:
+  - Univariate
+```
+
+<hr/>
+
 ```
  _____ _     _                   _          _
 /__   \ |__ (_)_ __   __ _ ___  | |_ ___   | |_ _ __ _   _
@@ -40,18 +57,3 @@ More advanced wavelet layer:
 
 
 Forecast close > 1 time step ahead!
-
-```
-Summary so far:
-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-
-The best performing models were the ones with:
-  Unsurprising:
-  - Larger hidden units (512)
-  - Smaller batch size (64)
-  - Higher learning rate (0.01) vs (0.001)
-  - Larger dataset (20% of total)
-
-  Surprising:
-  - Univariate
-```
