@@ -7,19 +7,27 @@
                      |___/                           |___/
 ```
 Volume encoding:
+
     - Binning
     - Embedding
 
 Alternate topologies:
+
     - Branched with deep features and merge (essentially embeddings)
       - Topology for these (FC, CONV?)
       - Num learnable parameters
+
     - Convolutional Networks
+
     - Multi-layer stacked
 
+
 More advanced wavelet layer:
+
     - Differential will mean the coefficients can be learnt with backpropagation
+
     - GPU implementation with pytorch tensors
+
     - Support for continuous wavelet functions:
       - implemented - db4, db8, haar
       - not implemented: morlet, mexh, paul
@@ -32,3 +40,18 @@ More advanced wavelet layer:
 
 
 Forecast close > 1 time step ahead!
+
+```
+Summary so far:
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+The best performing models were the ones with:
+  Unsurprising:
+  - Larger hidden units (512)
+  - Smaller batch size (64)
+  - Higher learning rate (0.01) vs (0.001)
+  - Larger dataset (20% of total)
+
+  Surprising:
+  - Univariate
+```
