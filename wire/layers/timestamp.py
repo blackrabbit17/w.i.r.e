@@ -4,12 +4,6 @@ import torch
 from typing import List
 
 
-SECONDS_PER_MINUTE = 60
-SECONDS_PER_HOUR = 60 * SECONDS_PER_MINUTE
-SECONDS_PER_DAY = 24 * SECONDS_PER_HOUR
-SECONDS_PER_WEEK = 7 * SECONDS_PER_DAY
-
-
 def cyclic_encoding(timestamp: str) -> np.ndarray:
     """
     Calculate the cyclic encoding of a datetime string.

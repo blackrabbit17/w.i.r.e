@@ -4,8 +4,6 @@ import pywt
 
 """
     Common wavelets for Time Series analysis
-    https://www.continuummechanics.org/images/wavelets/wavelet_samples.jpg
-
 
     Daubechies wavelets: Daubechies wavelets are a family of orthogonal wavelets that are widely used in
                          signal processing, including time series analysis. They are known for their good

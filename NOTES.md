@@ -10,15 +10,12 @@ Volume encoding:
     - Binning
     - Embedding
 
-Timestamp encoding:
-    - Cyclic encoding
-    - Embedding
-
 Alternate topologies:
     - Branched with deep features and merge (essentially embeddings)
       - Topology for these (FC, CONV?)
       - Num learnable parameters
-    - Convolutional
+    - Convolutional Networks
+    - Multi-layer stacked
 
 More advanced wavelet layer:
     - Differential will mean the coefficients can be learnt with backpropagation
@@ -27,11 +24,11 @@ More advanced wavelet layer:
       - implemented - db4, db8, haar
       - not implemented: morlet, mexh, paul
 
-    - Wavedec level hard coded to 2, but the dwt_max_level is computed internally via
+    - Wavedec level hard coded to 1, but the dwt_max_level is computed internally via:
       > level = int(np.floor(np.log2(data_len / wavelet.dec_len + 1)))
       Which, due to our short signal length is rounding to zero, and causing the wavelet functions to return the raw input signal!
-      - Investigate: Does a longer signal cause dwt_max_level to compute level > 1 ?
-      - should we just add level as a hyperparameter and grid search it for small values: {1, 2, 4} ?
+        - Investigate: Does a longer signal cause dwt_max_level to compute level > 0 ?
+        - should we just add level as a hyperparameter and grid search it for small values: {1, 2, 4} ?
 
 
-Forecast > 1 time step ahead!
+Forecast close > 1 time step ahead!

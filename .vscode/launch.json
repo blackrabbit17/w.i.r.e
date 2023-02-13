@@ -11,6 +11,20 @@
             "env": {
                 "PYTHONPATH": "${workspaceFolder}"},
             "justMyCode": false
+        },
+        {
+            "name": "Profile",
+            "type": "python",
+            "request": "launch",
+            "module": "cProfile",
+            "args": [
+                "-o", "/tmp/tmp.prof", "${workspaceFolder}/wire/main_multivariate.py"
+            ],
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}"},
+            "justMyCode": false
         }
     ]
 }

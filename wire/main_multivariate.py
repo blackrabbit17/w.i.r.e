@@ -9,7 +9,7 @@ import torch.optim as optim
 
 def train_with_grid_params(params):
 
-    data = get_multivariate_dataset(columns=['time', 'high', 'low', 'open', 'close', 'volume'])
+    data = get_multivariate_dataset(columns=['time', 'high', 'low', 'open', 'close', 'volume'], limit=100_000)
     train_data, val_data, test_data = train_test_split(data)
 
     steps_ahead = params['forecast']
@@ -43,7 +43,7 @@ def grid_search():
     param_grid = [
         {
             'forecast': [1, ],
-            'batch_size': [32, 64, 128],
+            'batch_size': [64],
             'hidden_dim': [256, 512],
             'wavelet_type': ['db4', 'db8', 'haar'],
             'base_dir': ['checkpoints/fc_multiv', ]
