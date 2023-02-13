@@ -9,7 +9,7 @@ import torch.optim as optim
 
 def train_with_grid_params(params):
 
-    data = get_multivariate_dataset(columns=['time', 'high', 'low', 'open', 'close', 'volume'], limit=100_000)
+    data = get_multivariate_dataset(columns=['time', 'high', 'low', 'open', 'close', 'volume'], limit=500_000)
     train_data, val_data, test_data = train_test_split(data)
 
     steps_ahead = params['forecast']
@@ -17,7 +17,7 @@ def train_with_grid_params(params):
 
     model = TimeSeriesMultivariateModel(batch_size, params['hidden_dim'], steps_ahead, params['wavelet_type'])
     criterion = nn.MSELoss()
-    optimizer = optim.Adam(model.parameters(), lr=0.001)
+    optimizer = optim.Adam(model.parameters(), lr=0.01)
 
     num_epochs = 50
 
@@ -46,7 +46,7 @@ def grid_search():
             'batch_size': [64],
             'hidden_dim': [256, 512],
             'wavelet_type': ['db4', 'db8', 'haar'],
-            'base_dir': ['checkpoints/fc_multiv', ]
+            'base_dir': ['checkpoints/fc_multiv_lr0_01_500k', ]
         }
     ]
 

@@ -30,10 +30,11 @@ def train_model(model, criterion, optimizer, train_data, val_data, test_data, ba
             start = batch * batch_size
             end = (batch + 1) * batch_size
             batch_data = train_data[start:end]
+            batch_tensor = torch.tensor(batch_data.values, dtype=torch.float32)
 
             # Forward pass
-            outputs = model(batch_data[:-steps_ahead])
-            loss = criterion(outputs, batch_data[-steps_ahead:])
+            outputs = model(batch_tensor[:-steps_ahead])
+            loss = criterion(outputs, batch_tensor[-steps_ahead:])
 
             # Backpropagate the gradients
             loss.backward()
@@ -56,8 +57,10 @@ def train_model(model, criterion, optimizer, train_data, val_data, test_data, ba
                 end = (batch + 1) * batch_size
                 batch_data = val_data[start:end]
 
-                bd_in = batch_data[:-steps_ahead]
-                bd_out = batch_data[-steps_ahead:]
+                batch_tensor = torch.tensor(batch_data.values, dtype=torch.float32)
+
+                bd_in = batch_tensor[:-steps_ahead]
+                bd_out = batch_tensor[-steps_ahead:]
 
                 outputs = model(bd_in)
                 val_loss += criterion(outputs, bd_out)
@@ -95,8 +98,10 @@ def train_model(model, criterion, optimizer, train_data, val_data, test_data, ba
 
             batch_data = test_data[batch_idx:batch_idx+batch_size]
 
-            model_inputs = batch_data[:-steps_ahead]
-            actual_outputs = batch_data[-steps_ahead:]
+            batch_tensor = torch.tensor(batch_data.values, dtype=torch.float32)
+
+            model_inputs = batch_tensor[:-steps_ahead]
+            actual_outputs = batch_tensor[-steps_ahead:]
             predicted_outputs = best_model(model_inputs)
 
             test_loss += criterion(predicted_outputs, actual_outputs)

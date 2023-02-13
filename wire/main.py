@@ -9,7 +9,7 @@ import torch.optim as optim
 
 def train_with_grid_params(params):
 
-    data = get_univariate_dataset(column='close', limit=200_000)
+    data = get_univariate_dataset(column='close', limit=1_000_000)
     train_data, val_data, test_data = train_test_split(data)
 
     steps_ahead = params['forecast']
@@ -17,9 +17,9 @@ def train_with_grid_params(params):
 
     model = TimeSeriesModel(batch_size, params['hidden_dim'], steps_ahead, params['wavelet_type'])
     criterion = nn.MSELoss()
-    optimizer = optim.Adam(model.parameters(), lr=0.001)
+    optimizer = optim.Adam(model.parameters(), lr=0.01)
 
-    num_epochs = 50
+    num_epochs = 70
 
     run_id, test_loss = train_model(
         model,
@@ -46,7 +46,7 @@ def grid_search():
             'batch_size': [64, 128],
             'hidden_dim': [256, 512],
             'wavelet_type': ['db4', 'db8', 'haar'],
-            'base_dir': ['checkpoints/fc_univ', ]}
+            'base_dir': ['checkpoints/fc_univ_lr0_01_1M', ]}
     ]
 
     for grid in ParameterGrid(param_grid):
@@ -54,11 +54,11 @@ def grid_search():
 
     # Sort the results
     lines = None
-    with open(f"{grid['base_dir']}/params", "r") as f:
+    with open(f"{param_grid[0]['base_dir'][0]}/params", "r") as f:
         lines = f.readlines()
         lines.sort(key=lambda x: float(x.split('|')[1]))
 
-    with open(f"{grid['base_dir']}/params", "w") as f:
+    with open(f"{param_grid[0]['base_dir'][0]}/params", "w") as f:
         f.writelines(lines)
 
 
