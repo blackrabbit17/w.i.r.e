@@ -51,18 +51,10 @@ def cyclic_encoding(timestamp: str) -> np.ndarray:
     return encoding
 
 
-class CyclicEncoding(torch.nn.Module):
-    def __init__(self):
-        """
-        Initialize the cyclic encoding layer.
+class CyclicTimestampEncoding(torch.nn.Module):
 
-        Args:
-        - period: The period to use for the encoding.
-        """
-        super(CyclicEncoding, self).__init__()
-
-    def get_output_dim(self) -> int:
-        return 16
+    def get_output_dim(self, input_shape) -> int:
+        return 8 * input_shape
 
     def forward(self, timestamps: List[str]) -> torch.Tensor:
         """
@@ -77,4 +69,4 @@ class CyclicEncoding(torch.nn.Module):
 
         encoded = np.stack([cyclic_encoding(ts) for ts in timestamps], axis=0)
 
-        return torch.from_numpy(encoded).float()
+        return torch.tensor(encoded.flatten(), dtype=torch.float32)

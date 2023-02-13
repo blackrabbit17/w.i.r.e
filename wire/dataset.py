@@ -52,7 +52,6 @@ def train_test_split(
     val_end_index = int((train_ratio + val_ratio) * num_data)
 
     test_start_index = int((train_ratio + val_ratio) * num_data)
-    test_end_index = num_data
 
     print(
         f'Dataset shape: {data.shape}\n',
@@ -65,8 +64,14 @@ def train_test_split(
     val_data = data[val_start_index:val_end_index]
     test_data = data[test_start_index:num_data]
 
+    #return (
+    #    torch.tensor(train_data.values, dtype=torch.float32),
+    #    torch.tensor(val_data.values, dtype=torch.float32),
+    #    torch.tensor(test_data.values, dtype=torch.float32)
+    #)
+
     return (
-        torch.tensor(train_data.values, dtype=torch.float32),
-        torch.tensor(val_data.values, dtype=torch.float32),
-        torch.tensor(test_data.values, dtype=torch.float32)
+        train_data,
+        val_data,
+        test_data
     )

@@ -1,6 +1,6 @@
 from wire.dataset import get_multivariate_dataset, train_test_split
 from wire.topologies.fc import TimeSeriesMultivariateModel
-from wire.train import train_model
+from wire.train import train_multiv_model
 
 from sklearn.model_selection import ParameterGrid
 import torch.nn as nn
@@ -9,7 +9,7 @@ import torch.optim as optim
 
 def train_with_grid_params(params):
 
-    data = get_multivariate_dataset(column=['high', 'low', 'open', 'close', 'volume'], limit=10000)
+    data = get_multivariate_dataset(columns=['time', 'high', 'low', 'open', 'close', 'volume'], limit=1000)
     train_data, val_data, test_data = train_test_split(data)
 
     steps_ahead = params['forecast']
@@ -19,9 +19,9 @@ def train_with_grid_params(params):
     criterion = nn.MSELoss()
     optimizer = optim.Adam(model.parameters(), lr=0.001)
 
-    num_epochs = 60
+    num_epochs = 11
 
-    run_id, test_loss = train_model(
+    run_id, test_loss = train_multiv_model(
         model,
         criterion,
         optimizer,
@@ -40,28 +40,15 @@ def train_with_grid_params(params):
 
 def grid_search():
 
-    """
     param_grid = [
         {
             'forecast': [1, ],
             'batch_size': [32, 64, 128],
-            'hidden_dim': [64, 128, 256, 512],
+            'hidden_dim': [256, 512],
             'wavelet_type': ['db4', 'db8', 'haar'],
-            'base_dir': ['checkpoints/fc_univ', ]
-        }
-    ]
-    """
-
-    param_grid = [
-        {
-            'forecast': [1, ],
-            'batch_size': [64, ],
-            'hidden_dim': [64],
-            'wavelet_type': ['db4'],
             'base_dir': ['checkpoints/fc_multiv', ]
         }
     ]
-
 
     for grid in ParameterGrid(param_grid):
         train_with_grid_params(grid)
