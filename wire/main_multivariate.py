@@ -9,7 +9,7 @@ import torch.optim as optim
 
 def train_with_grid_params(params):
 
-    data = get_multivariate_dataset(columns=['time', 'high', 'low', 'open', 'close', 'volume'], limit=1000)
+    data = get_multivariate_dataset(columns=['time', 'high', 'low', 'open', 'close', 'volume'])
     train_data, val_data, test_data = train_test_split(data)
 
     steps_ahead = params['forecast']
@@ -19,7 +19,7 @@ def train_with_grid_params(params):
     criterion = nn.MSELoss()
     optimizer = optim.Adam(model.parameters(), lr=0.001)
 
-    num_epochs = 11
+    num_epochs = 50
 
     run_id, test_loss = train_multiv_model(
         model,
